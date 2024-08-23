@@ -204,20 +204,54 @@ button:hover {
     </div>
 
     <script>
-        const showRegister = document.getElementById('show-register');
-        const showLogin = document.getElementById('show-login');
-        const loginBox = document.querySelector('.login-box');
-        const registerBox = document.getElementById('register-box');
+                // Variables to store the registered user data
+let registeredUser = null;
 
-        showRegister.addEventListener('click', () => {
-            loginBox.style.display = 'none';
-            registerBox.style.display = 'block';
-        });
+document.getElementById("show-register").addEventListener("click", function() {
+    document.querySelector(".login-box").style.display = "none";
+    document.querySelector(".register-box").style.display = "block";
+});
 
-        showLogin.addEventListener('click', () => {
-            loginBox.style.display = 'block';
-            registerBox.style.display = 'none';
-        });
+document.getElementById("show-login").addEventListener("click", function() {
+    document.querySelector(".login-box").style.display = "block";
+    document.querySelector(".register-box").style.display = "none";
+});
+
+document.querySelector(".register-box form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const username = this.querySelector('input[type="text"]').value;
+    const email = this.querySelector('input[type="email"]').value;
+    const password = this.querySelector('input[type="password"]').value;
+
+    // Store registered data
+    registeredUser = {
+        username: username,
+        email: email,
+        password: password
+    };
+
+    alert("Registration successful! Please login.");
+
+    // Switch back to login form after registration
+    document.querySelector(".login-box").style.display = "block";
+    document.querySelector(".register-box").style.display = "none";
+});
+
+document.querySelector(".login-box form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const username = this.querySelector('input[type="text"]').value;
+    const password = this.querySelector('input[type="password"]').value;
+
+    // Validate login credentials
+    if (registeredUser && username === registeredUser.username && password === registeredUser.password) {
+        alert("Login successful!");
+        window.location.href = "second.html"; // Redirect to dashboard page
+    } else {
+        alert("Invalid username or password. Please try again.");
+    }
+});
     </script>
 </body>
   </html>
