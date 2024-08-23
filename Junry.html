@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            position: relative;
+        }
+
+        .snowflake, .star, .emoji {
+            position: absolute;
+            color: #fff;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snowflake {
+            font-size: 24px;
+            animation: snowflake-fall 10s linear infinite;
+        }
+
+        .star {
+            font-size: 24px;
+            animation: star-twinkle 5s infinite, star-fall 15s linear infinite;
+        }
+
+        @keyframes snowflake-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        @keyframes star-twinkle {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes star-fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        @keyframes smile-fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            color: #fff;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #00bfff;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #333;
+            color: #fff;
+        }
+
+        .eye-icon {
+            position: absolute;
+            top: 67%;
+            right: 10px;
+            font-size: 24px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00bfff;
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background-color: #009acd;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 10px;
+            color: #1e90ff;
+            cursor: pointer;
+        }
+
+        .switch-form:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .emoji {
+            font-size: 36px;
+            animation: smile-fall 12s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div class="form-container" id="login-form">
+            <h2>Login</h2>
+            <form id="login" onsubmit="return validateLogin()">
+                <div class="input-group">
+                    <label for="login-username">Username:</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" required>
+                    <span id="show-pass-login" class="eye-icon" onclick="togglePassword('login-password', 'show-pass-login', 'hide-pass-login')">👁️</span>
+                    <span id="hide-pass-login" class="eye-icon hidden" onclick="togglePassword('login-password', 'show-pass-login', 'hide-pass-login')">🙈</span>
+                </div>
+                <button type="submit">Login</button>
+                <p class="switch-form" onclick="switchForm()">Register</p>
+            </form>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="form-container hidden" id="register-form">
+            <h2>Register</h2>
+            <form id="register" onsubmit="return validateRegister()">
+                <div class="input-group">
+                    <label for="register-username">Username:</label>
+                    <input type="text" id="register-username" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-email">Email:</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <button type="submit">Register</button>
+                <p class="switch-form" onclick="switchForm()">Login</p>
+            </form>
+        </div>
+    </div>
+    <script>
+        function switchForm() {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            if (loginForm.classList.contains('hidden')) {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+            }
+        }
+
+        function validateLogin() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            if (username === '' || password === '') {
+                alert('Please fill in all fields.');
+                return false;
+            }
+            // Add more validation if needed
+            return true;
+        }
+
+        function validateRegister() {
+            const username = document.getElementById('register-username').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (username === '' || email === '' || password === '') {
+                alert('Please fill in all fields.');
+                return false;
+            }
+            if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address.');
+                return false;
+            }
+            // Add more validation if needed
+            return true;
+        }
+
+        function togglePassword(passwordFieldId, showIconId, hideIconId) {
+            const passwordField = document.getElementById(passwordFieldId);
+            const showIcon = document.getElementById(showIconId);
+            const hideIcon = document.getElementById(hideIconId);
+            
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                showIcon.classList.add('hidden');
+                hideIcon.classList.remove('hidden');
+            } else {
+                passwordField.type = "password";
+                showIcon.classList.remove('hidden');
+                hideIcon.classList.add('hidden');
+            }
+        }
+
+        // Create snowflakes
+        for (let i = 0; i < 50; i++) {
+            let snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.fontSize = Math.random() * 20 + 10 + 'px';
+            snowflake.style.animationDuration = Math.random() * 10 + 10 + 's';
+            snowflake.textContent = '❄️';
+            document.body.appendChild(snowflake);
+        }
+
+        // Create stars
+        for (let i = 0; i < 20; i++) {
+            let star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.fontSize = Math.random() * 20 + 10 + 'px';
+            star.style.animationDuration = Math.random() * 20 + 10+ 's';
+            star.textContent = '⭐';
+            document.body.appendChild(star);
+        }
+
+        // Add a smile emoji
+        const smile = document.createElement('div');
+        smile.classList.add('emoji');
+        smile.textContent = '😄';
+        document.body.appendChild(smile);
+    </script>
+</body>
+  </html>
