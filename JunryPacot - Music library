@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junry Pacot Music Library</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 36px;
+            color: #1db954;
+        }
+
+        .song-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .song-item {
+            width: 180px;
+            padding: 15px;
+            background-color: #282828;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .song-item:hover {
+            transform: scale(1.05);
+            background-color: #1db954;
+        }
+
+        .song-item img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .song-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .song-artist {
+            font-size: 14px;
+            color: #b3b3b3;
+        }
+
+        .player {
+            background-color: #181818;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 80%;
+        }
+
+        .current-song {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #1db954;
+            font-weight: bold;
+        }
+
+        audio {
+            width: 100%;
+            outline: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .song-item {
+                width: 150px;
+            }
+
+            .song-item img {
+                width: 120px;
+                height: 120px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .player {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Top Filipino Songs</h1>
+        <div class="song-list" id="songList">
+            <!-- JavaScript will dynamically insert song list here -->
+        </div>
+        <div class="player" id="player">
+            <div class="current-song" id="currentSong">Select a song to play</div>
+            <audio controls id="audioPlayer">
+                <source id="audioSource" src="" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    </div>
+   
+
+    <script>
+        const songs = [
+    { title: "Anak", artist: "Freddie Aguilar", src: "Anak.mp3", cover: "anak.jpg" },
+    { title: "Bayan Ko", artist: "Freddie Aguilar", src: "bayan.mp3", cover: "bayan.jpg" },
+    { title: "Pinoy Ako", artist: "Orange &lemons", src: "Pinoy_Ako.mp3", cover: "Pinoy_Ako.jpg" },
+    { title: "Tatsulok", artist: "Bamboo", src: "Tatsulok.mp3", cover: "Tatsulok.jpg" },
+    { title: "Hawak Kamay", artist: "Yeng Constantino", src: "Hawak_Kamay.mp3", cover: "hawakamay.jpg" },
+    { title: "Paano", artist: "Gary Valenciano", src: "Paano.mp3", cover: "Paano.jpg" },
+    { title: "Narda", artist: "Kamikazee", src: "Narda.mp3", cover: "Narda.jpg" },
+    { title: "Pusong_Bato", artist: "BLACKHOLESTUDIO", src: "Pusong_Bato.mp3", cover: "puso.jpg" },
+    // Add more songs here
+];
+
+// Get HTML elements
+const songList = document.getElementById("songList");
+const currentSongElement = document.getElementById("currentSong");
+const audioPlayer = document.getElementById("audioPlayer");
+const audioSource = document.getElementById("audioSource");
+
+// Load songs into the song list
+songs.forEach(song => {
+    const songItem = document.createElement("div");
+    songItem.classList.add("song-item");
+    songItem.innerHTML = `
+        <img src="${song.cover}" alt="${song.title}">
+        <div class="song-title">${song.title}</div>
+        <div class="song-artist">${song.artist}</div>
+    `;
+
+    // Add click event to play the song
+    songItem.addEventListener("click", () => {
+        playSong(song);
+    });
+
+    songList.appendChild(songItem);
+});
+
+// Function to play a song
+function playSong(song) {
+    currentSongElement.textContent = `${song.title} - ${song.artist}`;
+    audioSource.src = song.src;
+    audioPlayer.load(); // Load the new audio source
+    audioPlayer.play(); // Start playing the new song
+}
+    </script>
+
+</body>
+</html>
